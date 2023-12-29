@@ -1,4 +1,6 @@
 # JustResult
+[![.NET](https://github.com/esquijarosa/JustResult/actions/workflows/dotnet.yml/badge.svg)](https://github.com/esquijarosa/JustResult/actions/workflows/dotnet.yml)
+
 This is a simple implementation of the Result Pattern thought to be as unobstructive as possible with the programming flow.
 
 ```csharp
