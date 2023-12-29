@@ -7,7 +7,7 @@ public async Task<Result<string>> GetArticleDescription(Guid articleId)
 {
   try
   {
-    var articleResult = _repo.GetArticleAsync(articleId);
+    var articleResult = await _repo.GetArticleAsync(articleId);
 
     if (!articleResult)
     {
@@ -35,7 +35,7 @@ public async Task<Result<Article>> GetArticleAsync(Guid articleId)
 {
   try
   {
-    return _db.QueryAsync<Article>(Queries.GetArticleById, new { articleId });
+    return await _db.QueryAsync<Article>(Queries.GetArticleById, new { articleId });
   }
   catch (Exception ex)
   {

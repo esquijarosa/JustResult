@@ -5,6 +5,24 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/esquijarosa/JustResult</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Company>2PSL</Company>
+    <Authors>Esquijarosa</Authors>
+    <Title>Just Result</Title>
+    <PackageId>2PSL.JustResult</PackageId>
+    <Description>Simple implementation of the Result Pattern.</Description>
+    <PackageTags>Result Pattern</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
