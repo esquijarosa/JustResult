@@ -61,4 +61,38 @@ public class ResultTTests
 		Assert.Equal("InvalidOperationException", ((List<Error>) articleResult!)[0].Code);
 		Assert.Equal("The article does not exists.", ((List<Error>) articleResult!)[0].Description);
 	}
+
+	[Fact]
+	public void BooleanFalse_SuccessResult()
+	{
+		// Act
+		var result = FalseResult();
+
+		// Assert
+		Assert.True(result);
+		Assert.False(result.Value);
+
+		/// While this is a valid implementation for a result, if you need to return
+		/// a <see cref="bool"/> user the non generic <see cref="Result"/> instead.
+		static Result<bool> FalseResult()
+		{
+			return false;
+		}
+	}
+
+	[Fact]
+	public void ErrorResult_ThrowsExceptionWhenAccessValue()
+	{
+		// Act
+		var result = FailResult();
+
+		// Assert
+		Assert.False(result);
+		Assert.Throws<InvalidOperationException>(() => result.Value);
+
+		static Result<string> FailResult()
+		{
+			return new Error("Generic.Error", "Some error ocurred");
+		}
+	}
 }

@@ -1,5 +1,11 @@
 ﻿namespace JustResult;
 
+/// <summary>
+/// Represents a result from a method call.
+/// </summary>
+/// <remarks>
+/// Use this implementation instead of using exceptions to control the flow of execution.
+/// </remarks>
 public readonly record struct Result
 {
 	private readonly List<Error>? _errors = null;
@@ -22,8 +28,24 @@ public readonly record struct Result
 		_errors = exception.MapErrors();
 	}
 
+	/// <summary>
+	/// Gets a value indicating if there was an error while executing the method.
+	/// </summary>
+	/// <remarks>
+	/// Use this property in case a <see cref="bool"/> result needs to be returned. You can enrich
+	/// the result using the errors list to provide more detail on the result using a specific
+	/// <see cref="Error.Code"/>.
+	/// </remarks>
 	public bool IsError { get; } = false;
 
+	/// <summary>
+	/// Get a value indicating if the method succeded executing.
+	/// </summary>
+	/// <remarks>
+	/// Use this property in case a <see cref="bool"/> result needs to be returned. You can enrich
+	/// the result using the errors list to provide more detail on the result using a specific
+	/// <see cref="Error.Code"/>.
+	/// </remarks>
 	public bool IsSuccess => !IsError;
 
 	public static implicit operator Result(Error error) => new(error);
@@ -40,6 +62,12 @@ public readonly record struct Result
 
 	public static explicit operator List<Error>?(Result result) => result.IsError ? result._errors : default;
 
+	/// <summary>
+	/// Executes actions depending on the success of failure of the result.
+	/// </summary>
+	/// <param name="onSuccess">Action to execute in case a successful result.</param>
+	/// <param name="onError">Action to execute in case of a failed result (or error).
+	/// The list of <see cref="Error"/>s is provided as an input parameter.</param>
 	public void Switch(Action onSuccess, Action<List<Error>> onError)
 	{
 		if (IsError)
@@ -51,6 +79,12 @@ public readonly record struct Result
 		onSuccess();
 	}
 
+	/// <summary>
+	/// Executes actions asynchronously depending on the success of failure of the result.
+	/// </summary>
+	/// <param name="onSuccess">Action to execute in case a successful result.</param>
+	/// <param name="onError">Action to execute in case of a failed result (or error).
+	/// The list of <see cref="Error"/>s is provided as an input parameter.</param>
 	public async Task SwitchAsync(Func<Task> onSuccess, Func<List<Error>, Task> onError)
 	{
 		if (IsError)
@@ -62,8 +96,18 @@ public readonly record struct Result
 		await onSuccess();
 	}
 
-	public List<Error> Match(Func<List<Error>, List<Error>> onError) => IsError ? _errors! : [];
+	/// <summary>
+	/// Returns a list of <see cref="Error"/>s in case of a failed result. An empty list otherwise.
+	/// </summary>
+	/// <param name="onError"><see cref="Func{T, TResult}"/> to execute in case there are errors.</param>
+	/// <returns><see cref="List{T}"/> of <see cref="Error"/>s in case there is any.</returns>
+	public List<Error> MapErrors(Func<List<Error>, List<Error>> onError) => IsError ? _errors! : [];
 
-	public async Task<List<Error>> MatchAsyn(Func<List<Error>, Task<List<Error>>> failure)
-		=> IsError ? await failure(_errors!) : [];
+	/// <summary>
+	/// Returns a list of <see cref="Error"/>s asynchronously in case of a failed result. An empty list otherwise.
+	/// </summary>
+	/// <param name="onError"><see cref="Func{T, TResult}"/> to execute in case there are errors.</param>
+	/// <returns><see cref="List{T}"/> of <see cref="Error"/>s in case there is any.</returns>
+	public async Task<List<Error>> MapErrorsAsyn(Func<List<Error>, Task<List<Error>>> onError)
+		=> IsError ? await onError(_errors!) : [];
 }
