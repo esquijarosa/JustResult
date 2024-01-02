@@ -1,4 +1,6 @@
-﻿namespace JustResult;
+﻿using System.Diagnostics.Contracts;
+
+namespace JustResult;
 
 /// <summary>
 /// Represents a result from a method call.
@@ -36,6 +38,7 @@ public readonly record struct Result
 	/// the result using the errors list to provide more detail on the result using a specific
 	/// <see cref="Error.Code"/>.
 	/// </remarks>
+	[Pure]
 	public bool IsError { get; } = false;
 
 	/// <summary>
@@ -46,20 +49,28 @@ public readonly record struct Result
 	/// the result using the errors list to provide more detail on the result using a specific
 	/// <see cref="Error.Code"/>.
 	/// </remarks>
+	[Pure]
 	public bool IsSuccess => !IsError;
 
+	[Pure]
 	public static implicit operator Result(Error error) => new(error);
 
+	[Pure]
 	public static implicit operator Result(Error[] errors) => new([.. errors]);
 
+	[Pure]
 	public static implicit operator Result(List<Error> errors) => new(errors);
 
+	[Pure]
 	public static implicit operator Result(Exception exception) => new(exception);
 
+	[Pure]
 	public static implicit operator Result(int _) => new();
 
+	[Pure]
 	public static implicit operator bool(Result result) => !result.IsError;
 
+	[Pure]
 	public static explicit operator List<Error>?(Result result) => result.IsError ? result._errors : default;
 
 	/// <summary>
@@ -68,6 +79,7 @@ public readonly record struct Result
 	/// <param name="onSuccess">Action to execute in case a successful result.</param>
 	/// <param name="onError">Action to execute in case of a failed result (or error).
 	/// The list of <see cref="Error"/>s is provided as an input parameter.</param>
+	[Pure]
 	public void Switch(Action onSuccess, Action<List<Error>> onError)
 	{
 		if (IsError)
@@ -85,6 +97,7 @@ public readonly record struct Result
 	/// <param name="onSuccess">Action to execute in case a successful result.</param>
 	/// <param name="onError">Action to execute in case of a failed result (or error).
 	/// The list of <see cref="Error"/>s is provided as an input parameter.</param>
+	[Pure]
 	public async Task SwitchAsync(Func<Task> onSuccess, Func<List<Error>, Task> onError)
 	{
 		if (IsError)
@@ -101,6 +114,7 @@ public readonly record struct Result
 	/// </summary>
 	/// <param name="onError"><see cref="Func{T, TResult}"/> to execute in case there are errors.</param>
 	/// <returns><see cref="List{T}"/> of <see cref="Error"/>s in case there is any.</returns>
+	[Pure]
 	public List<Error> MapErrors(Func<List<Error>, List<Error>> onError) => IsError ? _errors! : [];
 
 	/// <summary>
@@ -108,6 +122,7 @@ public readonly record struct Result
 	/// </summary>
 	/// <param name="onError"><see cref="Func{T, TResult}"/> to execute in case there are errors.</param>
 	/// <returns><see cref="List{T}"/> of <see cref="Error"/>s in case there is any.</returns>
+	[Pure]
 	public async Task<List<Error>> MapErrorsAsyn(Func<List<Error>, Task<List<Error>>> onError)
 		=> IsError ? await onError(_errors!) : [];
 }

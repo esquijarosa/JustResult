@@ -1,4 +1,6 @@
-﻿namespace JustResult;
+﻿using System.Diagnostics.Contracts;
+
+namespace JustResult;
 
 /// <summary>
 /// Represents a result of type <see cref="TValue"/> from a method call.
@@ -47,6 +49,7 @@ public readonly record struct Result<TValue>
 	/// This property should not be used as a <see cref="bool"/> result. For that
 	/// use case utilize the non generic <see cref="Result"/> instead.
 	/// </remarks>
+	[Pure]
 	public bool IsError { get; }
 
 	/// <summary>
@@ -56,28 +59,38 @@ public readonly record struct Result<TValue>
 	/// This property should not be used as a <see cref="bool"/> result. For that
 	/// use case utilize the non generic <see cref="Result"/> instead.
 	/// </remarks>
+	[Pure]
 	public bool IsSuccess => !IsError;
 
 	/// <summary>
 	/// Retrieve the value in the result if <see cref="IsSuccess"/> is <see langword="true"/>
 	/// </summary>
 	/// <exception cref="InvalidOperationException">If the <see cref="IsError"/> is <see langword="true"/>.</exception>
+	[Pure]
 	public TValue Value => IsSuccess ? _value! : throw new InvalidOperationException("Can not retrieve value from an 'Error' result.");
 
+	[Pure]
 	public static implicit operator Result<TValue>(TValue value) => new(value);
 
+	[Pure]
 	public static implicit operator Result<TValue>(Error error) => new(error);
 
+	[Pure]
 	public static implicit operator Result<TValue>(Error[] errors) => new([.. errors]);
 
+	[Pure]
 	public static implicit operator Result<TValue>(List<Error> errors) => new(errors);
 
+	[Pure]
 	public static implicit operator Result<TValue>(Exception exception) => new(exception);
 
+	[Pure]
 	public static implicit operator bool(Result<TValue> result) => result.IsSuccess;
 
+	[Pure]
 	public static explicit operator TValue?(Result<TValue> result) => result.IsSuccess ? result._value! : default;
 
+	[Pure]
 	public static explicit operator List<Error>?(Result<TValue> result) => result.IsError ? result._errors : default;
 
 	/// <summary>
@@ -87,6 +100,7 @@ public readonly record struct Result<TValue>
 	/// <param name="success"><see cref="Func{T, TResult}"/> to execute in case of success. The input parameter will be of type <see cref="TValue"/>.</param>
 	/// <param name="failure"><see cref="Func{T, TResult}"/> to execute in case of failure. The input parameter will be of type <see cref="List{T}"/>, with T as <see cref="Error"/>.</param>
 	/// <returns>The matched result.</returns>
+	[Pure]
 	public TResult Match<TResult>(Func<TValue, TResult> success, Func<List<Error>, TResult> failure)
 		=> IsSuccess ? success(_value!) : failure(_errors!);
 
@@ -97,6 +111,7 @@ public readonly record struct Result<TValue>
 	/// <param name="success"><see cref="Func{T, TResult}"/> to execute in case of success. The input parameter will be of type <see cref="TValue"/>.</param>
 	/// <param name="failure"><see cref="Func{T, TResult}"/> to execute in case of failure. The input parameter will be of type <see cref="List{T}"/>, with T as <see cref="Error"/>.</param>
 	/// <returns>The matched result.</returns>
+	[Pure]
 	public async Task<TResult> MatchAsync<TResult>(Func<TValue, Task<TResult>> success, Func<List<Error>, Task<TResult>> failure)
 		=> IsSuccess ? await success(_value!) : await failure(_errors!);
 }

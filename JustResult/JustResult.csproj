@@ -12,11 +12,12 @@
     <Title>Just Result</Title>
     <PackageId>2PSL.JustResult</PackageId>
     <Description>Simple implementation of the Result Pattern.</Description>
-    <PackageTags>Result Pattern</PackageTags>
+    <PackageTags>ResultPattern Result FlowControl</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
+    <PackageReleaseNotes>Minor changes to Result structure declaration to mark all methods a Pure.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
