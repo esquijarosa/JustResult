@@ -5,7 +5,9 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JustResult", "JustResult\JustResult.csproj", "{EB39BC82-8561-4C14-B88F-9595A33271B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustResult.Tests", "JustResult.Tests\JustResult.Tests.csproj", "{E2C184D3-B46A-4DAC-A84E-7DE044D43754}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JustResult.Tests", "JustResult.Tests\JustResult.Tests.csproj", "{E2C184D3-B46A-4DAC-A84E-7DE044D43754}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustResult.Tests.NET472", "JustResult.Tests.NET472\JustResult.Tests.NET472.csproj", "{479BCAE7-8AA0-4901-AA40-0C71A185D270}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{E2C184D3-B46A-4DAC-A84E-7DE044D43754}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2C184D3-B46A-4DAC-A84E-7DE044D43754}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2C184D3-B46A-4DAC-A84E-7DE044D43754}.Release|Any CPU.Build.0 = Release|Any CPU
+		{479BCAE7-8AA0-4901-AA40-0C71A185D270}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{479BCAE7-8AA0-4901-AA40-0C71A185D270}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{479BCAE7-8AA0-4901-AA40-0C71A185D270}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{479BCAE7-8AA0-4901-AA40-0C71A185D270}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

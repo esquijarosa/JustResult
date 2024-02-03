@@ -95,4 +95,27 @@ public class ResultTTests
 			return new Error("Generic.Error", "Some error ocurred");
 		}
 	}
+
+	[Fact]
+	public void MultipleErrorsResult_CanReadAllErros()
+	{
+		// Act
+		var result = FailResultMultipleErrors();
+
+		// Assert
+		Assert.False(result);
+		Assert.IsType<List<Error>>((List<Error>) result!);
+		Assert.Equal("Generic.Error", ((List<Error>) result!)[0].Code);
+		Assert.Equal("Generic.Error2", ((List<Error>) result!)[1].Code);
+		Assert.Throws<InvalidOperationException>(() => result.Value);
+
+		static Result<string> FailResultMultipleErrors()
+		{
+			return new Error[]
+			{
+				new ("Generic.Error", "Some error ocurred"),
+				new ("Generic.Error2", "Some other error ocurred")
+			};
+		}
+	}
 }
