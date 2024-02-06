@@ -69,6 +69,12 @@ public readonly record struct Result<TValue>
 	[Pure]
 	public TValue Value => IsSuccess ? _value! : throw new InvalidOperationException("Can not retrieve value from an 'Error' result.");
 
+	/// <summary>
+	/// Retrieve the errors in the result if <see cref="IsError"/> is <see langword="true"/>. Empty list otherwise.
+	/// </summary>
+	[Pure]
+	public List<Error> Errors => IsError ? _errors! : [];
+
 	[Pure]
 	public static implicit operator Result<TValue>(TValue value) => new(value);
 

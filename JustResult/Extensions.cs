@@ -33,7 +33,7 @@ namespace JustResult
 		/// <returns></returns>
 		public static Error MapError(this Exception exception)
 		{
-			return new Error(exception.TargetSite?.FullName() ?? exception.GetType().Name, exception.Message);
+			return new Error(exception.TargetSite?.FullName() ?? exception.GetType().Name, exception.Message, exception);
 		}
 
 		private static string? FullName(this MethodBase? method)

@@ -52,6 +52,12 @@ public readonly record struct Result
 	[Pure]
 	public bool IsSuccess => !IsError;
 
+	/// <summary>
+	/// Retrieve the errors in the result if <see cref="IsError"/> is <see langword="true"/>. Empty list otherwise.
+	/// </summary>
+	[Pure]
+	public List<Error> Errors => IsError ? _errors! : [];
+
 	[Pure]
 	public static implicit operator Result(Error error) => new(error);
 

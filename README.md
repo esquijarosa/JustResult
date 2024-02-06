@@ -4,7 +4,29 @@
 This is a simple implementation of the Result Pattern thought to be as unobstructive as possible with the programming flow.
 
 ```csharp
+/// Application...
 ...
+
+public async Task ProcessArticle(Guid articleId)
+{
+  var articleResult = await GetArticleDescription(articleId);
+
+  if (!articleResult)
+  {
+	// Handle error
+	return;
+  }
+
+  var articleDescription = (string) articleResult;
+
+  // Do something with the article description
+}
+
+...
+
+/// Articles Service...
+...
+
 public async Task<Result<string>> GetArticleDescription(Guid articleId)
 {
   try
@@ -13,7 +35,7 @@ public async Task<Result<string>> GetArticleDescription(Guid articleId)
 
     if (!articleResult)
     {
-      return (List<Error>) articleResult;
+      return articleResult.Errors;
     }
 
     if ((Article?) articleResult is not Article article)
@@ -33,6 +55,7 @@ public async Task<Result<string>> GetArticleDescription(Guid articleId)
 
 /// Articles Repo...
 ...
+
 public async Task<Result<Article>> GetArticleAsync(Guid articleId)
 {
   try
@@ -44,5 +67,6 @@ public async Task<Result<Article>> GetArticleAsync(Guid articleId)
     return ex;
   }
 }
+
 ...
 ```
