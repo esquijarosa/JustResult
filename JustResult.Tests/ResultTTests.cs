@@ -38,8 +38,8 @@ public class ResultTTests
 
 		// Assert
 		Assert.False(articleResult);
-		Assert.IsType<List<Error>>((List<Error>) articleResult!);
-		Assert.Equal("NotFound", ((List<Error>) articleResult!)[0].Code);
+		Assert.NotEmpty(articleResult.Errors);
+		Assert.Equal("NotFound", articleResult.Errors[0].Code);
 	}
 
 	[Fact]
@@ -57,9 +57,10 @@ public class ResultTTests
 
 		// Assert
 		Assert.False(articleResult);
-		Assert.IsType<List<Error>>((List<Error>) articleResult!);
-		Assert.Equal("InvalidOperationException", ((List<Error>) articleResult!)[0].Code);
-		Assert.Equal("The article does not exists.", ((List<Error>) articleResult!)[0].Description);
+		Assert.NotEmpty(articleResult.Errors);
+		Assert.Equal("InvalidOperationException", articleResult.Errors[0].Code);
+		Assert.Equal("The article does not exists.", articleResult.Errors[0].Description);
+		Assert.IsType<InvalidOperationException>(articleResult.Errors[0].Exception);
 	}
 
 	[Fact]
@@ -104,9 +105,9 @@ public class ResultTTests
 
 		// Assert
 		Assert.False(result);
-		Assert.IsType<List<Error>>((List<Error>) result!);
-		Assert.Equal("Generic.Error", ((List<Error>) result!)[0].Code);
-		Assert.Equal("Generic.Error2", ((List<Error>) result!)[1].Code);
+		Assert.NotEmpty(result.Errors);
+		Assert.Equal("Generic.Error", result.Errors[0].Code);
+		Assert.Equal("Generic.Error2", result.Errors[1].Code);
 		Assert.Throws<InvalidOperationException>(() => result.Value);
 
 		static Result<string> FailResultMultipleErrors()
